@@ -1,0 +1,226 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="IEspinozaProgramacionNCapasGSModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Materia">
+          <Key>
+            <PropertyRef Name="IdMateria" />
+          </Key>
+          <Property Name="IdMateria" Type="tinyint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="varchar" MaxLength="50" />
+          <Property Name="Creditos" Type="tinyint" />
+          <Property Name="Costo" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="IdSemestre" Type="tinyint" />
+        </EntityType>
+        <EntityType Name="Semestre">
+          <Key>
+            <PropertyRef Name="IdSemestre" />
+          </Key>
+          <Property Name="IdSemestre" Type="tinyint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <Association Name="FK__Materia__IdSemes__239E4DCF">
+          <End Role="Semestre" Type="Self.Semestre" Multiplicity="0..1" />
+          <End Role="Materia" Type="Self.Materia" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Semestre">
+              <PropertyRef Name="IdSemestre" />
+            </Principal>
+            <Dependent Role="Materia">
+              <PropertyRef Name="IdSemestre" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="MateriaAdd" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Nombre" Type="varchar" Mode="In" />
+          <Parameter Name="Creditos" Type="tinyint" Mode="In" />
+          <Parameter Name="Costo" Type="decimal" Mode="In" />
+          <Parameter Name="IdSemestre" Type="tinyint" Mode="In" />
+        </Function>
+        <Function Name="MateriaGetAll" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="MateriaGetById" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="IdMateria" Type="tinyint" Mode="In" />
+        </Function>
+        <Function Name="MateriaUpdate" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="IdMateria" Type="tinyint" Mode="In" />
+          <Parameter Name="Nombre" Type="varchar" Mode="In" />
+          <Parameter Name="Creditos" Type="tinyint" Mode="In" />
+          <Parameter Name="Costo" Type="decimal" Mode="In" />
+          <Parameter Name="IdSemestre" Type="tinyint" Mode="In" />
+        </Function>
+        <Function Name="SemestreGetAll" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <EntityContainer Name="IEspinozaProgramacionNCapasGSModelStoreContainer">
+          <EntitySet Name="Materia" EntityType="Self.Materia" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Semestre" EntityType="Self.Semestre" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__Materia__IdSemes__239E4DCF" Association="Self.FK__Materia__IdSemes__239E4DCF">
+            <End Role="Semestre" EntitySet="Semestre" />
+            <End Role="Materia" EntitySet="Materia" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="IEspinozaProgramacionNCapasGSModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Materia">
+          <Key>
+            <PropertyRef Name="IdMateria" />
+          </Key>
+          <Property Name="IdMateria" Type="Byte" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Creditos" Type="Byte" />
+          <Property Name="Costo" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="IdSemestre" Type="Byte" />
+          <NavigationProperty Name="Semestre" Relationship="Self.FK__Materia__IdSemes__239E4DCF" FromRole="Materia" ToRole="Semestre" />
+        </EntityType>
+        <EntityType Name="Semestre">
+          <Key>
+            <PropertyRef Name="IdSemestre" />
+          </Key>
+          <Property Name="IdSemestre" Type="Byte" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Materias" Relationship="Self.FK__Materia__IdSemes__239E4DCF" FromRole="Semestre" ToRole="Materia" />
+        </EntityType>
+        <Association Name="FK__Materia__IdSemes__239E4DCF">
+          <End Role="Semestre" Type="Self.Semestre" Multiplicity="0..1" />
+          <End Role="Materia" Type="Self.Materia" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Semestre">
+              <PropertyRef Name="IdSemestre" />
+            </Principal>
+            <Dependent Role="Materia">
+              <PropertyRef Name="IdSemestre" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="IEspinozaProgramacionNCapasGSEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Materias" EntityType="Self.Materia" />
+          <EntitySet Name="Semestres" EntityType="Self.Semestre" />
+          <AssociationSet Name="FK__Materia__IdSemes__239E4DCF" Association="Self.FK__Materia__IdSemes__239E4DCF">
+            <End Role="Semestre" EntitySet="Semestres" />
+            <End Role="Materia" EntitySet="Materias" />
+          </AssociationSet>
+          <FunctionImport Name="MateriaAdd">
+            <Parameter Name="Nombre" Mode="In" Type="String" />
+            <Parameter Name="Creditos" Mode="In" Type="Byte" />
+            <Parameter Name="Costo" Mode="In" Type="Decimal" />
+            <Parameter Name="IdSemestre" Mode="In" Type="Byte" />
+          </FunctionImport>
+          <FunctionImport Name="SemestreGetAll" ReturnType="Collection(IEspinozaProgramacionNCapasGSModel.SemestreGetAll_Result)" />
+          <FunctionImport Name="MateriaUpdate">
+            <Parameter Name="IdMateria" Mode="In" Type="Byte" />
+            <Parameter Name="Nombre" Mode="In" Type="String" />
+            <Parameter Name="Creditos" Mode="In" Type="Byte" />
+            <Parameter Name="Costo" Mode="In" Type="Decimal" />
+            <Parameter Name="IdSemestre" Mode="In" Type="Byte" />
+          </FunctionImport>
+          <FunctionImport Name="MateriaGetAll" ReturnType="Collection(IEspinozaProgramacionNCapasGSModel.MateriaGetAll_Result)" />
+          <FunctionImport Name="MateriaGetById" ReturnType="Collection(IEspinozaProgramacionNCapasGSModel.MateriaGetById_Result)">
+            <Parameter Name="IdMateria" Mode="In" Type="Byte" />
+          </FunctionImport>
+        </EntityContainer>
+        <ComplexType Name="SemestreGetAll_Result">
+          <Property Type="Byte" Name="IdSemestre" Nullable="false" />
+          <Property Type="String" Name="Nombre" Nullable="true" MaxLength="50" />
+        </ComplexType>
+        <ComplexType Name="MateriaGetAll_Result">
+          <Property Type="Byte" Name="IdMateria" Nullable="false" />
+          <Property Type="String" Name="Nombre" Nullable="true" MaxLength="50" />
+          <Property Type="Byte" Name="Creditos" Nullable="true" />
+          <Property Type="Decimal" Name="Costo" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="Byte" Name="IdSemestre" Nullable="false" />
+          <Property Type="String" Name="SemestreNombre" Nullable="true" MaxLength="50" />
+        </ComplexType>
+        <ComplexType Name="MateriaGetById_Result">
+          <Property Type="Byte" Name="IdMateria" Nullable="false" />
+          <Property Type="String" Name="Nombre" Nullable="true" MaxLength="50" />
+          <Property Type="Byte" Name="Creditos" Nullable="true" />
+          <Property Type="Decimal" Name="Costo" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="Byte" Name="IdSemestre" Nullable="false" />
+          <Property Type="String" Name="SemestreNombre" Nullable="true" MaxLength="50" />
+        </ComplexType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="IEspinozaProgramacionNCapasGSModelStoreContainer" CdmEntityContainer="IEspinozaProgramacionNCapasGSEntities">
+          <EntitySetMapping Name="Materias">
+            <EntityTypeMapping TypeName="IEspinozaProgramacionNCapasGSModel.Materia">
+              <MappingFragment StoreEntitySet="Materia">
+                <ScalarProperty Name="IdMateria" ColumnName="IdMateria" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Creditos" ColumnName="Creditos" />
+                <ScalarProperty Name="Costo" ColumnName="Costo" />
+                <ScalarProperty Name="IdSemestre" ColumnName="IdSemestre" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Semestres">
+            <EntityTypeMapping TypeName="IEspinozaProgramacionNCapasGSModel.Semestre">
+              <MappingFragment StoreEntitySet="Semestre">
+                <ScalarProperty Name="IdSemestre" ColumnName="IdSemestre" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="MateriaAdd" FunctionName="IEspinozaProgramacionNCapasGSModel.Store.MateriaAdd" />
+          <FunctionImportMapping FunctionImportName="SemestreGetAll" FunctionName="IEspinozaProgramacionNCapasGSModel.Store.SemestreGetAll">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="IEspinozaProgramacionNCapasGSModel.SemestreGetAll_Result">
+                <ScalarProperty Name="IdSemestre" ColumnName="IdSemestre" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="MateriaUpdate" FunctionName="IEspinozaProgramacionNCapasGSModel.Store.MateriaUpdate" />
+          <FunctionImportMapping FunctionImportName="MateriaGetAll" FunctionName="IEspinozaProgramacionNCapasGSModel.Store.MateriaGetAll">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="IEspinozaProgramacionNCapasGSModel.MateriaGetAll_Result">
+                <ScalarProperty Name="IdMateria" ColumnName="IdMateria" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Creditos" ColumnName="Creditos" />
+                <ScalarProperty Name="Costo" ColumnName="Costo" />
+                <ScalarProperty Name="IdSemestre" ColumnName="IdSemestre" />
+                <ScalarProperty Name="SemestreNombre" ColumnName="SemestreNombre" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="MateriaGetById" FunctionName="IEspinozaProgramacionNCapasGSModel.Store.MateriaGetById">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="IEspinozaProgramacionNCapasGSModel.MateriaGetById_Result">
+                <ScalarProperty Name="IdMateria" ColumnName="IdMateria" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Creditos" ColumnName="Creditos" />
+                <ScalarProperty Name="Costo" ColumnName="Costo" />
+                <ScalarProperty Name="IdSemestre" ColumnName="IdSemestre" />
+                <ScalarProperty Name="SemestreNombre" ColumnName="SemestreNombre" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
