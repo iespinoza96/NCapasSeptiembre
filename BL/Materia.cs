@@ -214,7 +214,7 @@ namespace BL
             {
                 using (SqlConnection context = new SqlConnection(DL.Conexion.GetConnection()))
                 {
-                    string query = "MateriaGetAll";
+                    string query = "MateriaGetById";
 
                     using (SqlCommand cmd = new SqlCommand(query, context))
                     {
@@ -293,6 +293,49 @@ namespace BL
 
                             result.Objects.Add(materia);
                         }
+
+                        result.Correct = true;
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                result.Correct = false;
+                result.Ex = ex;
+                result.Message = "Ocurrio un error al realizar la consulta en la base de datos " + result.Ex;
+                //throw;
+            }
+
+            return result;
+        }
+
+        public static ML.Result GetById(ML.Materia materia)
+        {
+            ML.Result result = new ML.Result();
+
+            try
+            {
+                using (DL_EF.IEspinozaProgramacionNCapasGSEntities context = new DL_EF.IEspinozaProgramacionNCapasGSEntities())
+                {
+                    var query = context.MateriaGetById(materia.IdMateria).FirstOrDefault();
+
+                    if (query != null)
+                    {
+
+                        materia = new ML.Materia();
+
+                        materia.IdMateria = query.IdMateria;
+                        materia.Nombre = query.Nombre;
+                        materia.Creditos = query.Creditos.Value;
+                        materia.Costo = query.Costo.Value;
+
+                        materia.Semestre = new ML.Semestre();
+                        materia.Semestre.IdSemestre = query.IdSemestre;
+                        materia.Semestre.Nombre = query.SemestreNombre;
+
+                        result.Objects.Add(materia);
+
 
                         result.Correct = true;
                     }
@@ -461,12 +504,13 @@ namespace BL
                 {
                     var query = (from materiaLINQ in context.Materias //FROM Materia
                                  join semetreLINQ in context.Semestres on materiaLINQ.IdSemestre equals semetreLINQ.IdSemestre
-                             //  join aliasVaraiable in tablaModeloB on tablaModeloA.FK equals tablaModeloB.PK
-                                 select new { 
-                                     IdMateria = materiaLINQ.IdMateria, 
-                                     Nombre = materiaLINQ.Nombre, 
-                                     Costo = materiaLINQ.Costo, 
-                                     Creditos = materiaLINQ.Creditos, 
+                                 //  join aliasVaraiable in tablaModeloB on tablaModeloA.FK equals tablaModeloB.PK
+                                 select new
+                                 {
+                                     IdMateria = materiaLINQ.IdMateria,
+                                     Nombre = materiaLINQ.Nombre,
+                                     Costo = materiaLINQ.Costo,
+                                     Creditos = materiaLINQ.Creditos,
                                      IdSemestre = materiaLINQ.IdSemestre,
                                      SemestreNombre = semetreLINQ.Nombre
                                  });

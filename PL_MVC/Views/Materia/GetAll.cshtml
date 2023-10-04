@@ -1,0 +1,85 @@
+﻿@model ML.Materia
+@{
+    ViewBag.Title = "GetAll";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-auto">
+            <h2>Materias</h2>
+        </div>
+
+    </div>
+    <div class="row">
+        <div class="col-auto">
+            <p>Utilice el boton verde para agregar una nueva materia</p>
+            <p>Utilice el boton amarillo para actualizar la información de  una materia</p>
+            <p>Utilice el boton rojo para eliminar una materia</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-auto">
+
+           
+            @Html.ActionLink(" Agregar", "Form", "Materia", new { area = "" }, new { @class = "btn btn-success bi bi-plus-square" })
+        </div>
+    </div>
+
+
+
+    <br />
+
+
+    @if (Model.Materias.Count > 0 && Model.Materias != null)
+    {
+        <table class="table table-dark table-hover table-striped " id="myTable">
+            <thead>
+                <tr class="table-secondary">
+                    <th class="text-center">Editar</th>
+                    <th class="visually-hidden">IdMateria</th>
+                    <th class="text-center">Nombre</th>
+                    <th>Costo</th>
+                    <th>Creditos</th>
+                    <th class="visually-hidden">IdSemestre</th>
+                    <th>Semestre Nombre</th>
+
+                    <th class="text-center">Eliminar</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (ML.Materia materia in Model.Materias)
+                {
+                    <tr>
+                        <td class="text-center"><a class="btn btn-warning bi bi-pencil-fill " href="@Url.Action("Form", "Materia", new {IdMateria = materia.IdMateria})"><i class="fa-solid fa-pencil"></i></a></td>
+
+                        <td class="visually-hidden" >@materia.IdMateria</td>
+                        <td>@materia.Nombre</td>
+                        <td>@materia.Costo</td>
+                        <td>@materia.Creditos</td>
+                        <td class="visually-hidden">@materia.Semestre.IdSemestre</td>
+                        <td>@materia.Semestre.Nombre</td>
+
+                        <td class="text-center"> <a class="btn btn-danger bi bi-recycle" href="@Url.Action("Delete", "Materia" ,new {IdMateria = materia.IdMateria})"><i class="fa-solid fa-trash-can" style="color:white;"></i></a>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <div class="alert alert-danger" role="alert">
+            <h3>@ViewBag.Message</h3>
+        </div>
+    }
+
+
+
+
+</div>
+
+
+
+
+
+
