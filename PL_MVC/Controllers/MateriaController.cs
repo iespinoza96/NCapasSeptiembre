@@ -31,7 +31,7 @@ namespace PL_MVC.Controllers
         }
 
         [HttpGet]//Abre la vista o el formulario
-        public ActionResult Form(int? IdMateria) 
+        public ActionResult Form(byte? IdMateria) 
         { 
             if (IdMateria == null)
             {
@@ -43,9 +43,15 @@ namespace PL_MVC.Controllers
             else
             {
                 //GetbyId
+                ML.Result result = BL.Materia.GetByIdEF(IdMateria.Value);
+                ML.Materia materia = new ML.Materia();
+                if (result.Correct)
+                {
+                    materia = (ML.Materia)result.Object;//Unboxing
+                }
                 //Mostrar un formulario con los datos del registro seleccionado
                 ViewBag.Accion = "Actualizar";
-                return View();
+                return View(materia);
             }
           
             
@@ -54,7 +60,17 @@ namespace PL_MVC.Controllers
         [HttpPost]//recibe la información que viene desde el formulario
         public ActionResult Form(ML.Materia materia)
         {
-            ML.Result result = new ML.Result();
+
+            HttpPostedFileBase file = Request.Files["Image"];
+
+            if (file.ContentLength > 0)
+            {
+                materia.Imagen = ConvertToBytes(file);
+
+                string imagenBase64 = Convert.ToBase64String(materia.Imagen);
+            }
+
+                ML.Result result = new ML.Result();
 
             if (materia.IdMateria == 0)
             {
@@ -68,7 +84,8 @@ namespace PL_MVC.Controllers
                 }
                 else
                 {
-                    return View();
+                    ViewBag.Mensaje = result.Message;
+                    return View("Modal");
                 }
                
                 
@@ -78,10 +95,30 @@ namespace PL_MVC.Controllers
                 //Update
 
                 result = BL.Materia.UpdateEF(materia);
-                return View();
+
+                if (result.Correct)
+                {
+                    ViewBag.Mensaje = result.Message;
+                    return View("Modal");
+                }
+                else
+                {
+                    ViewBag.Mensaje = result.Message;
+                    return View("Modal");
+                }
+               
             }
 
 
+        }
+
+        public byte[] ConvertToBytes(HttpPostedFileBase Imagen)
+        {
+            byte[] data = null;
+            System.IO.BinaryReader reader = new System.IO.BinaryReader(Imagen.InputStream);
+            data = reader.ReadBytes((int)Imagen.ContentLength);
+
+            return data;
         }
     }
 }

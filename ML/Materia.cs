@@ -12,6 +12,8 @@ namespace ML
         public string Nombre { get; set; }
         public byte Creditos { get; set; }
         public decimal Costo { get; set; }
+        //public string Imagen { get; set; }
+        public byte[] Imagen { get; set; }
 
         public ML.Semestre Semestre { get; set; } //Propiedad de navegación 
         //public byte IdSemestre { get; set; }

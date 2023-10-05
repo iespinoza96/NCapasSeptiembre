@@ -310,7 +310,7 @@ namespace BL
             return result;
         }
 
-        public static ML.Result GetById(ML.Materia materia)
+        public static ML.Result GetByIdEF(byte IdMateria)
         {
             ML.Result result = new ML.Result();
 
@@ -318,11 +318,11 @@ namespace BL
             {
                 using (DL_EF.IEspinozaProgramacionNCapasGSEntities context = new DL_EF.IEspinozaProgramacionNCapasGSEntities())
                 {
-                    var query = context.MateriaGetById(materia.IdMateria).FirstOrDefault();
+                    var query = context.MateriaGetById(IdMateria).FirstOrDefault();
 
                     if (query != null)
                     {
-
+                        ML.Materia materia = new ML.Materia();
                         materia = new ML.Materia();
 
                         materia.IdMateria = query.IdMateria;
@@ -334,7 +334,7 @@ namespace BL
                         materia.Semestre.IdSemestre = query.IdSemestre;
                         materia.Semestre.Nombre = query.SemestreNombre;
 
-                        result.Objects.Add(materia);
+                        result.Object = materia;//Boxing
 
 
                         result.Correct = true;
