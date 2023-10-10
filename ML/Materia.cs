@@ -18,6 +18,8 @@ namespace ML
         public ML.Semestre Semestre { get; set; } //Propiedad de navegación 
         //public byte IdSemestre { get; set; }
 
+        public ML.Grupo Grupo { get; set; }
+
         public List<object> Materias { get; set; }
 
     }

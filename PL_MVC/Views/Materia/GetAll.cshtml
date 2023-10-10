@@ -53,14 +53,15 @@
                     <tr>
                         <td class="text-center"><a class="btn btn-warning bi bi-pencil-fill " href="@Url.Action("Form", "Materia", new {IdMateria = materia.IdMateria})"><i class="fa-solid fa-pencil"></i></a></td>
 
-                        <td class="visually-hidden" >@materia.IdMateria</td>
+                        <td class="visually-hidden">@materia.IdMateria</td>
                         <td>@materia.Nombre</td>
                         <td>@materia.Costo</td>
                         <td>@materia.Creditos</td>
                         <td class="visually-hidden">@materia.Semestre.IdSemestre</td>
                         <td>@materia.Semestre.Nombre</td>
 
-                        <td class="text-center"> <a class="btn btn-danger bi bi-recycle" href="@Url.Action("Delete", "Materia" ,new {IdMateria = materia.IdMateria})"><i class="fa-solid fa-trash-can" style="color:white;"></i></a>
+                        @*<td class="text-center"> <a class="btn btn-danger bi bi-recycle" href="@Url.Action("Delete", "Materia" ,new {IdMateria = materia.IdMateria})"><i class="fa-solid fa-trash-can" style="color:white;"></i></a>*@
+                        <td><a class="btn btn-danger bi bi-recycle" href="@Url.Action("Delete", "Materia", new { IdMateria= materia.IdMateria})" onclick="return confirm('Estas seguro que deseas eliminar este registro?');"></a></td>
                     </tr>
                 }
             </tbody>

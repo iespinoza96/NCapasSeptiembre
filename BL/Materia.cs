@@ -411,6 +411,38 @@ namespace BL
             return result;
         }
 
+        public static ML.Result DeleteEF(byte idMateria)
+        {
+            ML.Result result = new ML.Result();
+
+            try
+            {
+                using (DL_EF.IEspinozaProgramacionNCapasGSEntities context = new DL_EF.IEspinozaProgramacionNCapasGSEntities())
+                {
+                    int query = context.MateriaDelete(idMateria);
+
+                    if (query > 0)
+                    {
+                        result.Correct = true;
+                        result.Message = "Registro actualizado correctamente";
+                    }
+
+                }
+
+            }
+            catch (Exception ex)
+            {
+                result.Correct = false;
+                result.Ex = ex;
+                result.Message = "La materia no pudo ser actualizada correctamente  " + result.Ex;
+                throw;
+            }
+
+            return result;
+        }
+
+
+
         //LINQ
 
         public static ML.Result AddLINQ(ML.Materia materia)
@@ -487,7 +519,9 @@ namespace BL
             catch (Exception ex)
             {
                 result.Correct = false;
-                result.Message = "No se encontró la materia" + materia.IdMateria;
+                result.Ex = ex;
+
+                result.Message = "No se encontró la materia" + materia.IdMateria + result.Ex.Message;
             }
 
 

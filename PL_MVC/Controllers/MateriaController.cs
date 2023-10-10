@@ -32,19 +32,32 @@ namespace PL_MVC.Controllers
 
         [HttpGet]//Abre la vista o el formulario
         public ActionResult Form(byte? IdMateria) 
-        { 
+        {
+            ML.Materia materia = new ML.Materia(); //global
+
+            materia.Semestre = new ML.Semestre();
+            materia.Grupo = new ML.Grupo();
+            materia.Grupo.Plantel = new ML.Plantel(); //Pais
+
+            ML.Result resultSemestre = BL.Semestre.GetAll(); //DDL Independientes
+            ML.Result resultPlantel = BL.Plantel.GetAll();
+
+            materia.Semestre.Semestres = resultSemestre.Objects;
+            materia.Grupo.Plantel.Planteles = resultPlantel.Objects;
+
             if (IdMateria == null)
             {
                 //add
                 //Mostrar un formulario vacio
+               
                 ViewBag.Accion = "Agregar";
-                return View();
+                return View(materia);
             }
             else
             {
                 //GetbyId
                 ML.Result result = BL.Materia.GetByIdEF(IdMateria.Value);
-                ML.Materia materia = new ML.Materia();
+                
                 if (result.Correct)
                 {
                     materia = (ML.Materia)result.Object;//Unboxing
@@ -112,6 +125,23 @@ namespace PL_MVC.Controllers
 
         }
 
+        [HttpGet]
+        public ActionResult Delete(byte IdMateria)
+        {
+            ML.Result result = BL.Materia.DeleteEF(IdMateria);
+
+            if (result.Correct)
+            {
+                ViewBag.Mensaje = "La materia se ha eliminado correctamente";
+            }
+            else
+            {
+                ViewBag.Mensaje = "La materia no se ha eliminado correctamente " + result.Message;
+            }
+
+            return PartialView("Modal");
+        }
+
         public byte[] ConvertToBytes(HttpPostedFileBase Imagen)
         {
             byte[] data = null;
@@ -120,5 +150,13 @@ namespace PL_MVC.Controllers
 
             return data;
         }
+
+        public JsonResult GetGrupos(int idPlantel)
+        {
+            var result = BL.Grupo.GetByIdPlantel(idPlantel);
+
+            return Json(result.Objects);
+        }
+
     }
 }

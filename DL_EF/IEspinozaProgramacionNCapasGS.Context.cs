@@ -27,8 +27,10 @@ namespace DL_EF
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<Materia> Materias { get; set; }
         public virtual DbSet<Semestre> Semestres { get; set; }
+        public virtual DbSet<Grupo> Grupoes { get; set; }
+        public virtual DbSet<Materia> Materias { get; set; }
+        public virtual DbSet<Plantel> Plantels { get; set; }
     
         public virtual int MateriaAdd(string nombre, Nullable<byte> creditos, Nullable<decimal> costo, Nullable<byte> idSemestre)
         {
@@ -93,6 +95,29 @@ namespace DL_EF
                 new ObjectParameter("IdMateria", typeof(byte));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<MateriaGetById_Result>("MateriaGetById", idMateriaParameter);
+        }
+    
+        public virtual ObjectResult<GrupoGetByIdPlantel_Result> GrupoGetByIdPlantel(Nullable<int> idPlantel)
+        {
+            var idPlantelParameter = idPlantel.HasValue ?
+                new ObjectParameter("IdPlantel", idPlantel) :
+                new ObjectParameter("IdPlantel", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GrupoGetByIdPlantel_Result>("GrupoGetByIdPlantel", idPlantelParameter);
+        }
+    
+        public virtual ObjectResult<PlantelGetAll_Result> PlantelGetAll()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<PlantelGetAll_Result>("PlantelGetAll");
+        }
+    
+        public virtual int MateriaDelete(Nullable<byte> idMateria)
+        {
+            var idMateriaParameter = idMateria.HasValue ?
+                new ObjectParameter("IdMateria", idMateria) :
+                new ObjectParameter("IdMateria", typeof(byte));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("MateriaDelete", idMateriaParameter);
         }
     }
 }

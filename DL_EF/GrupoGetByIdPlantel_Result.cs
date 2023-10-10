@@ -10,18 +10,11 @@
 namespace DL_EF
 {
     using System;
-    using System.Collections.Generic;
     
-    public partial class Materia
+    public partial class GrupoGetByIdPlantel_Result
     {
-        public byte IdMateria { get; set; }
+        public int IdGrupo { get; set; }
         public string Nombre { get; set; }
-        public Nullable<byte> Creditos { get; set; }
-        public Nullable<decimal> Costo { get; set; }
-        public Nullable<byte> IdSemestre { get; set; }
-        public Nullable<int> IdGrupo { get; set; }
-    
-        public virtual Grupo Grupo { get; set; }
-        public virtual Semestre Semestre { get; set; }
+        public Nullable<int> IdPlantel { get; set; }
     }
 }
