@@ -21,11 +21,43 @@
     <div class="row">
         <div class="col-auto">
 
-           
+
             @Html.ActionLink(" Agregar", "Form", "Materia", new { area = "" }, new { @class = "btn btn-success bi bi-plus-square" })
         </div>
     </div>
 
+    <div class="row">
+        <div class="col-auto">
+
+
+            @using (Html.BeginForm("GetAll", "Materia", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+
+                <div class="row">
+                    <div class="col">
+                        @Html.LabelFor(model => model.Nombre)
+                        @Html.TextBoxFor(model => model.Nombre, new { @class = "form-control" })
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col">
+                        @Html.LabelFor(model => model.Creditos)
+                        @Html.TextBoxFor(model => model.Creditos, new { @class = "form-control" })
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col">
+                        <input type="submit" class="btn btn-info bi bi-pencil-fill" value="Buscar" />
+
+                    </div>
+                </div>
+
+
+            }
+        </div>
+    </div>
 
 
     <br />

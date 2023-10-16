@@ -83,11 +83,6 @@ namespace DL_EF
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("MateriaUpdate", idMateriaParameter, nombreParameter, creditosParameter, costoParameter, idSemestreParameter);
         }
     
-        public virtual ObjectResult<MateriaGetAll_Result> MateriaGetAll()
-        {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<MateriaGetAll_Result>("MateriaGetAll");
-        }
-    
         public virtual ObjectResult<MateriaGetById_Result> MateriaGetById(Nullable<byte> idMateria)
         {
             var idMateriaParameter = idMateria.HasValue ?
@@ -118,6 +113,19 @@ namespace DL_EF
                 new ObjectParameter("IdMateria", typeof(byte));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("MateriaDelete", idMateriaParameter);
+        }
+    
+        public virtual ObjectResult<MateriaGetAll_Result> MateriaGetAll(string nombre, Nullable<byte> creditos)
+        {
+            var nombreParameter = nombre != null ?
+                new ObjectParameter("Nombre", nombre) :
+                new ObjectParameter("Nombre", typeof(string));
+    
+            var creditosParameter = creditos.HasValue ?
+                new ObjectParameter("Creditos", creditos) :
+                new ObjectParameter("Creditos", typeof(byte));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<MateriaGetAll_Result>("MateriaGetAll", nombreParameter, creditosParameter);
         }
     }
 }

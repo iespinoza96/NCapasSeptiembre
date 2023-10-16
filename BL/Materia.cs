@@ -264,7 +264,7 @@ namespace BL
 
         //Entity Framework 
 
-        public static ML.Result GetAllEF()
+        public static ML.Result GetAllEF(ML.Materia materia)
         {
             ML.Result result = new ML.Result();
 
@@ -272,7 +272,7 @@ namespace BL
             {
                 using (DL_EF.IEspinozaProgramacionNCapasGSEntities context = new DL_EF.IEspinozaProgramacionNCapasGSEntities())
                 {
-                    var query = context.MateriaGetAll().ToList();
+                    var query = context.MateriaGetAll(materia.Nombre,materia.Creditos).ToList();
 
                     if (query != null)
                     {
@@ -280,7 +280,7 @@ namespace BL
 
                         foreach (var row in query)
                         {
-                            ML.Materia materia = new ML.Materia();
+                            materia = new ML.Materia();
 
                             materia.IdMateria = row.IdMateria;
                             materia.Nombre = row.Nombre;
@@ -288,7 +288,7 @@ namespace BL
                             materia.Costo = row.Costo.Value;
 
                             materia.Semestre = new ML.Semestre();
-                            materia.Semestre.IdSemestre = row.IdSemestre;
+                            materia.Semestre.IdSemestre = row.IdSemestre.Value;
                             materia.Semestre.Nombre = row.SemestreNombre;
 
                             result.Objects.Add(materia);

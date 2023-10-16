@@ -9,11 +9,16 @@ namespace PL_MVC.Controllers
     public class MateriaController : Controller
     {
         // GET: Materia
+        [HttpGet]
         public ActionResult GetAll()
         {
-            ML.Result result = BL.Materia.GetAllEF();
+            ML.Materia materia = new ML.Materia();
 
-            ML.Materia materia = new ML.Materia();  
+            materia.Nombre = (materia.Nombre==null)?"":materia.Nombre;
+            materia.Creditos = (materia.Creditos==null)? byte.Parse(""):materia.Creditos;
+            ML.Result result = BL.Materia.GetAllEF(materia);
+
+             
 
             materia.Materias = new List<object>();
 
@@ -28,6 +33,32 @@ namespace PL_MVC.Controllers
                 return View(materia);
             }
             
+        }
+
+        [HttpPost]
+        public ActionResult GetAll(ML.Materia materia)
+        {
+             
+
+            materia.Nombre = (materia.Nombre == null) ? "" : materia.Nombre;
+            materia.Creditos = (materia.Creditos == null) ? byte.Parse("") : materia.Creditos;
+            ML.Result result = BL.Materia.GetAllEF(materia);
+
+
+
+            materia.Materias = new List<object>();
+
+            if (result.Correct)
+            {
+                materia.Materias = result.Objects;
+                return View(materia);
+            }
+            else
+            {
+                ViewBag.Message = result.Message;
+                return View(materia);
+            }
+
         }
 
         [HttpGet]//Abre la vista o el formulario
@@ -61,6 +92,11 @@ namespace PL_MVC.Controllers
                 if (result.Correct)
                 {
                     materia = (ML.Materia)result.Object;//Unboxing
+                    materia.Semestre.Semestres = resultSemestre.Objects;
+
+                    materia.Grupo = new ML.Grupo();
+                    materia.Grupo.Plantel = new ML.Plantel();
+                    materia.Grupo.Plantel.Planteles = resultPlantel.Objects;
                 }
                 //Mostrar un formulario con los datos del registro seleccionado
                 ViewBag.Accion = "Actualizar";
