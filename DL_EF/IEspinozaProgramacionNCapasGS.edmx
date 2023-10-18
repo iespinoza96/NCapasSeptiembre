@@ -23,6 +23,7 @@
           <Property Name="Costo" Type="decimal" Precision="18" Scale="2" />
           <Property Name="IdSemestre" Type="tinyint" />
           <Property Name="IdGrupo" Type="int" />
+          <Property Name="Estatus" Type="bit" />
         </EntityType>
         <EntityType Name="Plantel">
           <Key>
@@ -86,12 +87,19 @@
         <Function Name="MateriaDelete" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="IdMateria" Type="tinyint" Mode="In" />
         </Function>
+        <Function Name="MateriaEstatus" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="IdMateria" Type="tinyint" Mode="In" />
+          <Parameter Name="Estatus" Type="bit" Mode="In" />
+        </Function>
         <Function Name="MateriaGetAll" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="Nombre" Type="varchar" Mode="In" />
           <Parameter Name="Creditos" Type="tinyint" Mode="In" />
         </Function>
         <Function Name="MateriaGetById" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="IdMateria" Type="tinyint" Mode="In" />
+        </Function>
+        <Function Name="MateriaGetByNombre" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Nombre" Type="varchar" Mode="In" />
         </Function>
         <Function Name="MateriaUpdate" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="IdMateria" Type="tinyint" Mode="In" />
@@ -134,12 +142,6 @@
         </EntityType>
         <EntityContainer Name="IEspinozaProgramacionNCapasGSEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Semestres" EntityType="Self.Semestre" />
-          <FunctionImport Name="MateriaAdd">
-            <Parameter Name="Nombre" Mode="In" Type="String" />
-            <Parameter Name="Creditos" Mode="In" Type="Byte" />
-            <Parameter Name="Costo" Mode="In" Type="Decimal" />
-            <Parameter Name="IdSemestre" Mode="In" Type="Byte" />
-          </FunctionImport>
           <FunctionImport Name="SemestreGetAll" ReturnType="Collection(IEspinozaProgramacionNCapasGSModel.SemestreGetAll_Result)" />
           <FunctionImport Name="MateriaUpdate">
             <Parameter Name="IdMateria" Mode="In" Type="Byte" />
@@ -152,19 +154,10 @@
           <Parameter Name="IdMateria" Mode="In" Type="Byte" />
           </FunctionImport>
           <EntitySet Name="Grupoes" EntityType="IEspinozaProgramacionNCapasGSModel.Grupo" />
-          <EntitySet Name="Materias" EntityType="IEspinozaProgramacionNCapasGSModel.Materia" />
           <EntitySet Name="Plantels" EntityType="IEspinozaProgramacionNCapasGSModel.Plantel" />
           <AssociationSet Name="FK__Grupo__IdPlantel__38996AB5" Association="IEspinozaProgramacionNCapasGSModel.FK__Grupo__IdPlantel__38996AB5">
             <End Role="Plantel" EntitySet="Plantels" />
             <End Role="Grupo" EntitySet="Grupoes" />
-          </AssociationSet>
-          <AssociationSet Name="FK__Materia__IdGrupo__398D8EEE" Association="IEspinozaProgramacionNCapasGSModel.FK__Materia__IdGrupo__398D8EEE">
-            <End Role="Grupo" EntitySet="Grupoes" />
-            <End Role="Materia" EntitySet="Materias" />
-          </AssociationSet>
-          <AssociationSet Name="FK__Materia__IdSemes__239E4DCF" Association="IEspinozaProgramacionNCapasGSModel.FK__Materia__IdSemes__239E4DCF">
-            <End Role="Semestre" EntitySet="Semestres" />
-            <End Role="Materia" EntitySet="Materias" />
           </AssociationSet>
           <FunctionImport Name="GrupoGetByIdPlantel" ReturnType="Collection(IEspinozaProgramacionNCapasGSModel.GrupoGetByIdPlantel_Result)">
           <Parameter Name="IdPlantel" Mode="In" Type="Int32" />
@@ -173,9 +166,31 @@
           <FunctionImport Name="MateriaDelete">
           <Parameter Name="IdMateria" Mode="In" Type="Byte" />
           </FunctionImport>
+          <EntitySet Name="Materias" EntityType="IEspinozaProgramacionNCapasGSModel.Materia" />
+          <AssociationSet Name="FK__Materia__IdGrupo__398D8EEE" Association="IEspinozaProgramacionNCapasGSModel.FK__Materia__IdGrupo__398D8EEE">
+            <End Role="Grupo" EntitySet="Grupoes" />
+            <End Role="Materia" EntitySet="Materias" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Materia__IdSemes__239E4DCF" Association="IEspinozaProgramacionNCapasGSModel.FK__Materia__IdSemes__239E4DCF">
+            <End Role="Semestre" EntitySet="Semestres" />
+            <End Role="Materia" EntitySet="Materias" />
+          </AssociationSet>
+          <FunctionImport Name="MateriaAdd">
+            <Parameter Name="Nombre" Mode="In" Type="String" />
+            <Parameter Name="Creditos" Mode="In" Type="Byte" />
+            <Parameter Name="Costo" Mode="In" Type="Decimal" />
+            <Parameter Name="IdSemestre" Mode="In" Type="Byte" />
+          </FunctionImport>
+          <FunctionImport Name="MateriaEstatus">
+            <Parameter Name="IdMateria" Mode="In" Type="Byte" />
+            <Parameter Name="Estatus" Mode="In" Type="Boolean" />
+          </FunctionImport>
           <FunctionImport Name="MateriaGetAll" ReturnType="Collection(IEspinozaProgramacionNCapasGSModel.MateriaGetAll_Result)">
             <Parameter Name="Nombre" Mode="In" Type="String" />
             <Parameter Name="Creditos" Mode="In" Type="Byte" />
+          </FunctionImport>
+          <FunctionImport Name="MateriaGetByNombre" ReturnType="Collection(IEspinozaProgramacionNCapasGSModel.MateriaGetByNombre_Result)">
+            <Parameter Name="Nombre" Mode="In" Type="String" />
           </FunctionImport>
         </EntityContainer>
         <ComplexType Name="SemestreGetAll_Result">
@@ -200,19 +215,6 @@
           <NavigationProperty Name="Plantel" Relationship="IEspinozaProgramacionNCapasGSModel.FK__Grupo__IdPlantel__38996AB5" FromRole="Grupo" ToRole="Plantel" />
           <NavigationProperty Name="Materias" Relationship="IEspinozaProgramacionNCapasGSModel.FK__Materia__IdGrupo__398D8EEE" FromRole="Grupo" ToRole="Materia" />
         </EntityType>
-        <EntityType Name="Materia">
-          <Key>
-            <PropertyRef Name="IdMateria" />
-          </Key>
-          <Property Name="IdMateria" Type="Byte" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="Creditos" Type="Byte" />
-          <Property Name="Costo" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="IdSemestre" Type="Byte" />
-          <Property Name="IdGrupo" Type="Int32" />
-          <NavigationProperty Name="Grupo" Relationship="IEspinozaProgramacionNCapasGSModel.FK__Materia__IdGrupo__398D8EEE" FromRole="Materia" ToRole="Grupo" />
-          <NavigationProperty Name="Semestre" Relationship="IEspinozaProgramacionNCapasGSModel.FK__Materia__IdSemes__239E4DCF" FromRole="Materia" ToRole="Semestre" />
-        </EntityType>
         <EntityType Name="Plantel">
           <Key>
             <PropertyRef Name="IdPlantel" />
@@ -233,6 +235,29 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <ComplexType Name="GrupoGetByIdPlantel_Result">
+          <Property Type="Int32" Name="IdGrupo" Nullable="false" />
+          <Property Type="String" Name="Nombre" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="IdPlantel" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="PlantelGetAll_Result">
+          <Property Type="Int32" Name="IdPlantel" Nullable="false" />
+          <Property Type="String" Name="Nombre" Nullable="true" MaxLength="50" />
+        </ComplexType>
+        <EntityType Name="Materia">
+          <Key>
+            <PropertyRef Name="IdMateria" />
+          </Key>
+          <Property Name="IdMateria" Type="Byte" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Creditos" Type="Byte" />
+          <Property Name="Costo" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="IdSemestre" Type="Byte" />
+          <Property Name="IdGrupo" Type="Int32" />
+          <Property Name="Estatus" Type="Boolean" />
+          <NavigationProperty Name="Grupo" Relationship="IEspinozaProgramacionNCapasGSModel.FK__Materia__IdGrupo__398D8EEE" FromRole="Materia" ToRole="Grupo" />
+          <NavigationProperty Name="Semestre" Relationship="IEspinozaProgramacionNCapasGSModel.FK__Materia__IdSemes__239E4DCF" FromRole="Materia" ToRole="Semestre" />
+        </EntityType>
         <Association Name="FK__Materia__IdGrupo__398D8EEE">
           <End Type="IEspinozaProgramacionNCapasGSModel.Grupo" Role="Grupo" Multiplicity="0..1" />
           <End Type="IEspinozaProgramacionNCapasGSModel.Materia" Role="Materia" Multiplicity="*" />
@@ -257,15 +282,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <ComplexType Name="GrupoGetByIdPlantel_Result">
-          <Property Type="Int32" Name="IdGrupo" Nullable="false" />
-          <Property Type="String" Name="Nombre" Nullable="true" MaxLength="50" />
-          <Property Type="Int32" Name="IdPlantel" Nullable="true" />
-        </ComplexType>
-        <ComplexType Name="PlantelGetAll_Result">
-          <Property Type="Int32" Name="IdPlantel" Nullable="false" />
-          <Property Type="String" Name="Nombre" Nullable="true" MaxLength="50" />
-        </ComplexType>
         <ComplexType Name="MateriaGetAll_Result">
           <Property Type="Byte" Name="IdMateria" Nullable="false" />
           <Property Type="String" Name="Nombre" Nullable="true" MaxLength="50" />
@@ -274,9 +290,14 @@
           <Property Type="Byte" Name="IdSemestre" Nullable="true" />
           <Property Type="String" Name="SemestreNombre" Nullable="true" MaxLength="50" />
           <Property Type="Int32" Name="IdGrupo" Nullable="true" />
+          <Property Type="Boolean" Name="Estatus" Nullable="true" />
           <Property Type="String" Name="GrupoNombre" Nullable="true" MaxLength="50" />
           <Property Type="Int32" Name="IdPlantel" Nullable="true" />
           <Property Type="String" Name="PlantelNombre" Nullable="true" MaxLength="50" />
+        </ComplexType>
+        <ComplexType Name="MateriaGetByNombre_Result">
+          <Property Type="String" Name="Nombre" Nullable="true" MaxLength="50" />
+          <Property Type="Byte" Name="Creditos" Nullable="true" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -292,7 +313,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <FunctionImportMapping FunctionImportName="MateriaAdd" FunctionName="IEspinozaProgramacionNCapasGSModel.Store.MateriaAdd" />
           <FunctionImportMapping FunctionImportName="SemestreGetAll" FunctionName="IEspinozaProgramacionNCapasGSModel.Store.SemestreGetAll">
             <ResultMapping>
               <ComplexTypeMapping TypeName="IEspinozaProgramacionNCapasGSModel.SemestreGetAll_Result">
@@ -323,18 +343,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Materias">
-            <EntityTypeMapping TypeName="IEspinozaProgramacionNCapasGSModel.Materia">
-              <MappingFragment StoreEntitySet="Materia">
-                <ScalarProperty Name="IdGrupo" ColumnName="IdGrupo" />
-                <ScalarProperty Name="IdSemestre" ColumnName="IdSemestre" />
-                <ScalarProperty Name="Costo" ColumnName="Costo" />
-                <ScalarProperty Name="Creditos" ColumnName="Creditos" />
-                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
-                <ScalarProperty Name="IdMateria" ColumnName="IdMateria" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Plantels">
             <EntityTypeMapping TypeName="IEspinozaProgramacionNCapasGSModel.Plantel">
               <MappingFragment StoreEntitySet="Plantel">
@@ -361,6 +369,21 @@
             </ResultMapping>
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="MateriaDelete" FunctionName="IEspinozaProgramacionNCapasGSModel.Store.MateriaDelete" />
+          <EntitySetMapping Name="Materias">
+            <EntityTypeMapping TypeName="IEspinozaProgramacionNCapasGSModel.Materia">
+              <MappingFragment StoreEntitySet="Materia">
+                <ScalarProperty Name="Estatus" ColumnName="Estatus" />
+                <ScalarProperty Name="IdGrupo" ColumnName="IdGrupo" />
+                <ScalarProperty Name="IdSemestre" ColumnName="IdSemestre" />
+                <ScalarProperty Name="Costo" ColumnName="Costo" />
+                <ScalarProperty Name="Creditos" ColumnName="Creditos" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="IdMateria" ColumnName="IdMateria" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="MateriaAdd" FunctionName="IEspinozaProgramacionNCapasGSModel.Store.MateriaAdd" />
+          <FunctionImportMapping FunctionImportName="MateriaEstatus" FunctionName="IEspinozaProgramacionNCapasGSModel.Store.MateriaEstatus" />
           <FunctionImportMapping FunctionImportName="MateriaGetAll" FunctionName="IEspinozaProgramacionNCapasGSModel.Store.MateriaGetAll">
             <ResultMapping>
               <ComplexTypeMapping TypeName="IEspinozaProgramacionNCapasGSModel.MateriaGetAll_Result">
@@ -371,9 +394,18 @@
                 <ScalarProperty Name="IdSemestre" ColumnName="IdSemestre" />
                 <ScalarProperty Name="SemestreNombre" ColumnName="SemestreNombre" />
                 <ScalarProperty Name="IdGrupo" ColumnName="IdGrupo" />
+                <ScalarProperty Name="Estatus" ColumnName="Estatus" />
                 <ScalarProperty Name="GrupoNombre" ColumnName="GrupoNombre" />
                 <ScalarProperty Name="IdPlantel" ColumnName="IdPlantel" />
                 <ScalarProperty Name="PlantelNombre" ColumnName="PlantelNombre" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="MateriaGetByNombre" FunctionName="IEspinozaProgramacionNCapasGSModel.Store.MateriaGetByNombre">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="IEspinozaProgramacionNCapasGSModel.MateriaGetByNombre_Result">
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Creditos" ColumnName="Creditos" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>

@@ -13,12 +13,14 @@ namespace PL_MVC.Controllers
         public ActionResult GetAll()
         {
             ML.Materia materia = new ML.Materia();
+            materia.Semestre = new ML.Semestre();
+            ML.Result resultSemestre = BL.Semestre.GetAll();
 
             materia.Nombre = (materia.Nombre==null)?"":materia.Nombre;
             materia.Creditos = (materia.Creditos==null)? byte.Parse(""):materia.Creditos;
             ML.Result result = BL.Materia.GetAllEF(materia);
 
-             
+            materia.Semestre.Semestres = resultSemestre.Objects;
 
             materia.Materias = new List<object>();
 
@@ -107,56 +109,68 @@ namespace PL_MVC.Controllers
         }
 
         [HttpPost]//recibe la información que viene desde el formulario
-        public ActionResult Form(ML.Materia materia)
+        public ActionResult Form([Bind(Exclude = "IdMateria")] ML.Materia materia, HttpPostedFileBase file)
         {
-
-            HttpPostedFileBase file = Request.Files["Image"];
-
-            if (file.ContentLength > 0)
+            if (ModelState.IsValid)
             {
-                materia.Imagen = ConvertToBytes(file);
+                
 
-                string imagenBase64 = Convert.ToBase64String(materia.Imagen);
-            }
+                if (file.ContentLength > 0)
+                {
+                    materia.Imagen = ConvertToBytes(file);
+
+                    string imagenBase64 = Convert.ToBase64String(materia.Imagen);
+                }
 
                 ML.Result result = new ML.Result();
 
-            if (materia.IdMateria == 0)
-            {
-                //add
-                result = BL.Materia.AddEF(materia);
-
-                if (result.Correct)
+                if (materia.IdMateria == 0)
                 {
-                     ViewBag.Mensaje = result.Message;
-                    return View("Modal");
+                    //add
+                    result = BL.Materia.AddEF(materia);
+
+                    if (result.Correct)
+                    {
+                        ViewBag.Mensaje = result.Message;
+                        return View("Modal");
+                    }
+                    else
+                    {
+                        ViewBag.Mensaje = result.Message;
+                        return View("Modal");
+                    }
+
+
                 }
                 else
                 {
-                    ViewBag.Mensaje = result.Message;
-                    return View("Modal");
+                    //Update
+
+                    result = BL.Materia.UpdateEF(materia);
+
+                    if (result.Correct)
+                    {
+                        ViewBag.Mensaje = result.Message;
+                        return View("Modal");
+                    }
+                    else
+                    {
+                        ViewBag.Mensaje = result.Message;
+                        return View("Modal");
+                    }
+
                 }
-               
-                
             }
             else
             {
-                //Update
+                ML.Result resultSemestre = BL.Semestre.GetAll(); //DDL Independientes
+                ML.Result resultPlantel = BL.Plantel.GetAll();
 
-                result = BL.Materia.UpdateEF(materia);
-
-                if (result.Correct)
-                {
-                    ViewBag.Mensaje = result.Message;
-                    return View("Modal");
-                }
-                else
-                {
-                    ViewBag.Mensaje = result.Message;
-                    return View("Modal");
-                }
-               
+                materia.Semestre.Semestres = resultSemestre.Objects;
+                materia.Grupo.Plantel.Planteles = resultPlantel.Objects;
+                return View(materia);
             }
+            
 
 
         }
@@ -187,12 +201,21 @@ namespace PL_MVC.Controllers
             return data;
         }
 
-        public JsonResult GetGrupos(int idPlantel)
+        public JsonResult GetGrupos(int IdPlantel)
         {
-            var result = BL.Grupo.GetByIdPlantel(idPlantel);
+            var result = BL.Grupo.GetByIdPlantel(IdPlantel);
 
             return Json(result.Objects);
         }
+
+        [HttpPost]
+        public JsonResult CambiarStatus(byte idMateria, bool estatus)
+        {
+            ML.Result result = BL.Materia.ChangeStatus(idMateria, estatus);
+
+            return Json(result);
+        }
+
 
     }
 }

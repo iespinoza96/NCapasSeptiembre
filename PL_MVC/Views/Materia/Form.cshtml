@@ -32,6 +32,7 @@
             <div class="col">
                 @Html.LabelFor(model => model.Nombre)
                 @Html.TextBoxFor(model => model.Nombre, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Nombre)
             </div>
         </div>
 
@@ -53,7 +54,7 @@
             <div class="col">
                 @Html.LabelFor(model => model.Semestre)
                 @*@Html.TextBoxFor(model => model.Semestre.IdSemestre, new { @class = "form-control" })*@
-                @Html.DropDownListFor(model => model.Semestre.IdSemestre, new SelectList(Model.Semestre.Semestres, "IdSemestre", "Nombre"), "Selecciona un Semestre", htmlAttributes: new { id = "ddlEstado", @class = "form-control" })
+                @Html.DropDownListFor(model => model.Semestre.IdSemestre, new SelectList(Model.Semestre.Semestres, "IdSemestre", "Nombre"), "Selecciona un Semestre", htmlAttributes: new { id = "ddlSemestre", @class = "form-control" })
             </div>
         </div>
 
@@ -87,7 +88,7 @@
             <div class="col">
                 @Html.LabelFor(model => model.Imagen)
                 @* @Html.TextBoxFor(model => model.Imagen, new { @class = "form-control" })*@
-                <input type="file" class="btn btn-info" name="Image" />
+                <input type="file" class="btn btn-info" name="file" />
             </div>
         </div>
         <br />
@@ -104,19 +105,19 @@
 </div>
 
 @Scripts.Render("~/bundles/jquery")
-<script src="~/Scripts/jquery-3.4.1.js"></script>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 <script type="text/javascript">
 
-$(document).ready(function () {
+    $(document).ready(function () {
         $("#ddlPlantel").change(function () {
             $("#ddlGrupo").empty();
             $.ajax({
                 type: 'POST',
                 url: '@Url.Action("GetGrupos")',
                 dataType: 'json',
-                data: { idPlantel: $("#ddlPlantel").val() },
+                data: { IdPlantel: $("#ddlPlantel").val() },
                 success: function (grupos) {
-                    $("#ddlGrupo").append('<option value="0">'+ 'Seleccione una opción' + '</option>');
+                    $("#ddlGrupo").append('<option value="0">' + 'Seleccione una opción' + '</option>');
                     $.each(grupos, function (i, grupos) {
                         $("#ddlGrupo").append('<option value="'
                             + grupos.IdGrupo + '">'
@@ -128,6 +129,8 @@ $(document).ready(function () {
                 }
             });
         });
+    });
+       
 </script>
 
 

@@ -29,29 +29,8 @@ namespace DL_EF
     
         public virtual DbSet<Semestre> Semestres { get; set; }
         public virtual DbSet<Grupo> Grupoes { get; set; }
-        public virtual DbSet<Materia> Materias { get; set; }
         public virtual DbSet<Plantel> Plantels { get; set; }
-    
-        public virtual int MateriaAdd(string nombre, Nullable<byte> creditos, Nullable<decimal> costo, Nullable<byte> idSemestre)
-        {
-            var nombreParameter = nombre != null ?
-                new ObjectParameter("Nombre", nombre) :
-                new ObjectParameter("Nombre", typeof(string));
-    
-            var creditosParameter = creditos.HasValue ?
-                new ObjectParameter("Creditos", creditos) :
-                new ObjectParameter("Creditos", typeof(byte));
-    
-            var costoParameter = costo.HasValue ?
-                new ObjectParameter("Costo", costo) :
-                new ObjectParameter("Costo", typeof(decimal));
-    
-            var idSemestreParameter = idSemestre.HasValue ?
-                new ObjectParameter("IdSemestre", idSemestre) :
-                new ObjectParameter("IdSemestre", typeof(byte));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("MateriaAdd", nombreParameter, creditosParameter, costoParameter, idSemestreParameter);
-        }
+        public virtual DbSet<Materia> Materias { get; set; }
     
         public virtual ObjectResult<SemestreGetAll_Result> SemestreGetAll()
         {
@@ -115,6 +94,40 @@ namespace DL_EF
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("MateriaDelete", idMateriaParameter);
         }
     
+        public virtual int MateriaAdd(string nombre, Nullable<byte> creditos, Nullable<decimal> costo, Nullable<byte> idSemestre)
+        {
+            var nombreParameter = nombre != null ?
+                new ObjectParameter("Nombre", nombre) :
+                new ObjectParameter("Nombre", typeof(string));
+    
+            var creditosParameter = creditos.HasValue ?
+                new ObjectParameter("Creditos", creditos) :
+                new ObjectParameter("Creditos", typeof(byte));
+    
+            var costoParameter = costo.HasValue ?
+                new ObjectParameter("Costo", costo) :
+                new ObjectParameter("Costo", typeof(decimal));
+    
+            var idSemestreParameter = idSemestre.HasValue ?
+                new ObjectParameter("IdSemestre", idSemestre) :
+                new ObjectParameter("IdSemestre", typeof(byte));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("MateriaAdd", nombreParameter, creditosParameter, costoParameter, idSemestreParameter);
+        }
+    
+        public virtual int MateriaEstatus(Nullable<byte> idMateria, Nullable<bool> estatus)
+        {
+            var idMateriaParameter = idMateria.HasValue ?
+                new ObjectParameter("IdMateria", idMateria) :
+                new ObjectParameter("IdMateria", typeof(byte));
+    
+            var estatusParameter = estatus.HasValue ?
+                new ObjectParameter("Estatus", estatus) :
+                new ObjectParameter("Estatus", typeof(bool));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("MateriaEstatus", idMateriaParameter, estatusParameter);
+        }
+    
         public virtual ObjectResult<MateriaGetAll_Result> MateriaGetAll(string nombre, Nullable<byte> creditos)
         {
             var nombreParameter = nombre != null ?
@@ -126,6 +139,15 @@ namespace DL_EF
                 new ObjectParameter("Creditos", typeof(byte));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<MateriaGetAll_Result>("MateriaGetAll", nombreParameter, creditosParameter);
+        }
+    
+        public virtual ObjectResult<MateriaGetByNombre_Result> MateriaGetByNombre(string nombre)
+        {
+            var nombreParameter = nombre != null ?
+                new ObjectParameter("Nombre", nombre) :
+                new ObjectParameter("Nombre", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<MateriaGetByNombre_Result>("MateriaGetByNombre", nombreParameter);
         }
     }
 }

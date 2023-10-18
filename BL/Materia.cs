@@ -272,7 +272,7 @@ namespace BL
             {
                 using (DL_EF.IEspinozaProgramacionNCapasGSEntities context = new DL_EF.IEspinozaProgramacionNCapasGSEntities())
                 {
-                    var query = context.MateriaGetAll(materia.Nombre,materia.Creditos).ToList();
+                    var query = context.MateriaGetAll(materia.Nombre, materia.Creditos).ToList();
 
                     if (query != null)
                     {
@@ -286,10 +286,20 @@ namespace BL
                             materia.Nombre = row.Nombre;
                             materia.Creditos = row.Creditos.Value;
                             materia.Costo = row.Costo.Value;
+                            materia.Estatus = row.Estatus.Value;
 
                             materia.Semestre = new ML.Semestre();
-                            materia.Semestre.IdSemestre = row.IdSemestre.Value;
+                            // row.IdSemestre = (row.IdSemestre == null)? byte.Parse("0") : row.IdSemestre.Value;
+                            materia.Semestre.IdSemestre = row.IdSemestre;
                             materia.Semestre.Nombre = row.SemestreNombre;
+
+                            materia.Grupo = new ML.Grupo();
+                            materia.Grupo.IdGrupo = row.IdGrupo;
+                            materia.Grupo.Nombre = row.GrupoNombre;
+
+                            materia.Grupo.Plantel = new ML.Plantel();
+                            materia.Grupo.Plantel.IdPlantel = row.IdPlantel;
+                            materia.Grupo.Plantel.Nombre = row.PlantelNombre;
 
                             result.Objects.Add(materia);
                         }
@@ -441,6 +451,32 @@ namespace BL
             return result;
         }
 
+        public static ML.Result ChangeStatus(byte idMateria, bool estatus)
+        {
+            ML.Result result = new ML.Result();
+
+            try
+            {
+                using (DL_EF.IEspinozaProgramacionNCapasGSEntities context = new DL_EF.IEspinozaProgramacionNCapasGSEntities())
+                {
+                    int query = context.MateriaEstatus(idMateria, estatus);
+
+                    if (query >= 1)
+                    {
+                        result.Correct = true;
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            {
+                result.Correct = false;
+                result.Message = ex.Message;
+            }
+            return result;
+        }
+
+
 
 
         //LINQ
@@ -581,6 +617,42 @@ namespace BL
                 result.Correct = false;
                 result.Message = ex.Message;
             }
+            return result;
+        }
+
+        public static ML.Result GetByNombre(string nombre)
+        {
+            ML.Result result = new ML.Result();
+
+            try
+            {
+                using (DL_EF.IEspinozaProgramacionNCapasGSEntities context = new DL_EF.IEspinozaProgramacionNCapasGSEntities())
+                {
+                    var query = context.MateriaGetByNombre(nombre).FirstOrDefault();
+
+                    if (query != null)
+                    {
+                        ML.Materia materia = new ML.Materia();
+
+                        materia.Nombre = query.Nombre;
+                        materia.Creditos = query.Creditos.Value;
+
+                        result.Object = materia;//Boxing
+
+
+                        result.Correct = true;
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                result.Correct = false;
+                result.Ex = ex;
+                result.Message = "Ocurrio un error al realizar la consulta en la base de datos " + result.Ex;
+                //throw;
+            }
+
             return result;
         }
 

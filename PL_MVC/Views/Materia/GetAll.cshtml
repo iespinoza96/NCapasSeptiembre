@@ -16,6 +16,7 @@
             <p>Utilice el boton verde para agregar una nueva materia</p>
             <p>Utilice el boton amarillo para actualizar la información de  una materia</p>
             <p>Utilice el boton rojo para eliminar una materia</p>
+            <br />
         </div>
     </div>
     <div class="row">
@@ -23,9 +24,10 @@
 
 
             @Html.ActionLink(" Agregar", "Form", "Materia", new { area = "" }, new { @class = "btn btn-success bi bi-plus-square" })
+
         </div>
     </div>
-
+    <br />
     <div class="row">
         <div class="col-auto">
 
@@ -35,24 +37,26 @@
 
                 <div class="row">
                     <div class="col">
-                        @Html.LabelFor(model => model.Nombre)
-                        @Html.TextBoxFor(model => model.Nombre, new { @class = "form-control" })
-                    </div>
-                </div>
 
-                <div class="row">
+                        @Html.TextBoxFor(model => model.Nombre, new { @class = "form-control", @placeholder = "Nombre" })
+                    </div>
                     <div class="col">
-                        @Html.LabelFor(model => model.Creditos)
-                        @Html.TextBoxFor(model => model.Creditos, new { @class = "form-control" })
-                    </div>
-                </div>
 
-                <div class="row">
+                        @Html.TextBoxFor(model => model.Creditos, new { @class = "form-control", @placeholder = "Creditos" })
+                    </div>
+                    <div class="col">
+                        @Html.DropDownListFor(model => model.Semestre.IdSemestre, new SelectList(Model.Semestre.Semestres, "IdSemestre", "Nombre"), "Selecciona un Semestre", htmlAttributes: new { id = "ddlEstado", @class = "form-control" })
+
+
+                    </div>
+
                     <div class="col">
                         <input type="submit" class="btn btn-info bi bi-pencil-fill" value="Buscar" />
 
                     </div>
                 </div>
+
+              
 
 
             }
@@ -68,15 +72,16 @@
         <table class="table table-dark table-hover table-striped " id="myTable">
             <thead>
                 <tr class="table-secondary">
-                    <th class="text-center">Editar</th>
+                    <th>Editar</th>
                     <th class="visually-hidden">IdMateria</th>
-                    <th class="text-center">Nombre</th>
+                    <th>Nombre</th>
                     <th>Costo</th>
                     <th>Creditos</th>
+                    <th>Estatus</th>
                     <th class="visually-hidden">IdSemestre</th>
                     <th>Semestre Nombre</th>
 
-                    <th class="text-center">Eliminar</th>
+                    <th>Eliminar</th>
                 </tr>
             </thead>
             <tbody>
@@ -89,6 +94,25 @@
                         <td>@materia.Nombre</td>
                         <td>@materia.Costo</td>
                         <td>@materia.Creditos</td>
+
+                        @if (materia.Estatus)
+                        {
+                            <td style="text-align: center; vertical-align: middle;">
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" checked onchange="ChangeStatus(@materia.IdMateria, this)">
+                                </div>
+                            </td>
+                        }
+                        else
+                        {
+                            <td style="text-align: center; vertical-align: middle;">
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" onchange="ChangeStatus(@materia.IdMateria, this);">
+                                </div>
+                            </td>
+                        }
+
+
                         <td class="visually-hidden">@materia.Semestre.IdSemestre</td>
                         <td>@materia.Semestre.Nombre</td>
 
@@ -110,6 +134,25 @@
 
 
 </div>
+
+@Scripts.Render("~/bundles/jquery")
+<script src="~/Scripts/jquery-3.4.1.js"></script>
+<script type="text/javascript">
+    function ChangeStatus(idMateria,e){
+        var estatus = e.checked
+         $.ajax({
+                type: 'POST',
+                url: '@Url.Action("CambiarStatus")',
+                dataType: 'json',
+                data: {idMateria, estatus},
+                success: {               },
+                error: function (ex) {
+                    alert('Failed.' + ex);
+                }
+           });
+    }
+
+</script>
 
 
 

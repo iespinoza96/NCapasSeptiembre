@@ -80,6 +80,9 @@
     <Compile Include="MateriaGetById_Result.cs">
       <DependentUpon>IEspinozaProgramacionNCapasGS.tt</DependentUpon>
     </Compile>
+    <Compile Include="MateriaGetByNombre_Result.cs">
+      <DependentUpon>IEspinozaProgramacionNCapasGS.tt</DependentUpon>
+    </Compile>
     <Compile Include="Plantel.cs">
       <DependentUpon>IEspinozaProgramacionNCapasGS.tt</DependentUpon>
     </Compile>

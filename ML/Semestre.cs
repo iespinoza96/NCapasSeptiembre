@@ -8,7 +8,7 @@ namespace ML
 {
     public class Semestre
     {
-        public byte IdSemestre { get; set; } //propiedad
+        public byte? IdSemestre { get; set; } //propiedad
         public string Nombre { get; set; }
         public List<object> Semestres { get; set; }
     }
