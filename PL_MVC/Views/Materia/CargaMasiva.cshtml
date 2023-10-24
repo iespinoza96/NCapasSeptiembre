@@ -1,0 +1,30 @@
+﻿
+@{
+    ViewBag.Title = "CargaMasiva";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+    <h2> Carga Masiva de Materias</h2>
+
+    <div class="row">
+        <div class="col">
+            <p>Por favor suba un archivo para ingresar los datos en la base</p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            @using (Html.BeginForm("CargaMasiva", "Materia", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                <input type="file" class="btn" name="cargaMasiva" value="" />
+                <input type="submit" class="btn-info" name="guardar" value="Cargar" />
+            }
+            </div>
+    </div>
+</div>
+
+
+
+
+

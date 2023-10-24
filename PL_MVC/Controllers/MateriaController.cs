@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -109,12 +110,11 @@ namespace PL_MVC.Controllers
         }
 
         [HttpPost]//recibe la información que viene desde el formulario
-        public ActionResult Form([Bind(Exclude = "IdMateria")] ML.Materia materia, HttpPostedFileBase file)
+        public ActionResult Form(ML.Materia materia, HttpPostedFileBase file)
         {
             if (ModelState.IsValid)
             {
                 
-
                 if (file.ContentLength > 0)
                 {
                     materia.Imagen = ConvertToBytes(file);
@@ -214,6 +214,56 @@ namespace PL_MVC.Controllers
             ML.Result result = BL.Materia.ChangeStatus(idMateria, estatus);
 
             return Json(result);
+        }
+
+        [HttpGet]
+        public ActionResult CargaMasiva()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult CargaMasiva(HttpPostedFileBase cargaMasiva)
+        {
+            //var archivo = System.IO.File.OpenText(cargaMasiva.ContentType);
+            using (StreamReader file = new StreamReader(cargaMasiva.InputStream))
+            {
+
+                string row = file.ReadLine();
+
+                while (!file.EndOfStream)
+                {
+                    row = file.ReadLine();
+
+                    string[] rowFinal = row.Split('|');
+
+                    ML.Materia materia = new ML.Materia();
+
+                    materia.Nombre = rowFinal[0];
+                    materia.Creditos = byte.Parse(rowFinal[1]);
+                    materia.Costo = decimal.Parse(rowFinal[2]);
+
+                    materia.Semestre = new ML.Semestre();
+                    materia.Semestre.IdSemestre = byte.Parse(rowFinal[3]);
+
+                    materia.Grupo = new ML.Grupo();
+                    materia.Grupo.IdGrupo = int.Parse(rowFinal[4]);
+
+                    ML.Result result = BL.Materia.AddEF(materia);
+
+                    if (result.Correct)
+                    {
+
+                    }
+                    else
+                    {
+                        
+                    }
+
+                }
+            }
+
+                return View();
         }
 
 

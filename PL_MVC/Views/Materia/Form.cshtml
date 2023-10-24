@@ -50,6 +50,14 @@
             </div>
         </div>
 
+
+        <div class="row">
+            <div class="col">
+                @Html.LabelFor(model => model.Costo)
+                @Html.TextBoxFor(model => model.Nombre, new { @class = "form-control", @id = "datepicker" })
+            </div>
+        </div>
+
         <div class="row">
             <div class="col">
                 @Html.LabelFor(model => model.Semestre)
@@ -104,9 +112,18 @@
     }
 </div>
 
-@Scripts.Render("~/bundles/jquery")
-<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-<script type="text/javascript">
+@section scripts
+{
+    @Scripts.Render("~/bundles/jquery")
+    <meta charset="utf-8">
+
+    <link rel="stylesheet" href="//apps.bdimg.com/libs/jqueryui/1.10.4/css/jquery-ui.min.css">
+    <script src="//apps.bdimg.com/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script src="//apps.bdimg.com/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
+    <link rel="stylesheet" href="jqueryui/style.css">
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <script type="text/javascript">
 
     $(document).ready(function () {
         $("#ddlPlantel").change(function () {
@@ -129,9 +146,18 @@
                 }
             });
         });
+
+
     });
-       
-</script>
+
+    $(function () {
+        $("#datepicker").datepicker();
+    });
+
+    </script>
+}
+
+
 
 
 

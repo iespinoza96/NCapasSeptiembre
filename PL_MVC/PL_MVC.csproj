@@ -127,6 +127,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\CargaMasivaController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MateriaController.cs" />
     <Compile Include="Global.asax.cs">
@@ -189,9 +190,13 @@
     <Content Include="Views\Materia\Form.cshtml" />
     <Content Include="Views\Materia\Modal.cshtml" />
     <Content Include="Views\Home\Login.cshtml" />
+    <Content Include="Views\Materia\CargaMasiva.cshtml" />
+    <Content Include="Views\CargaMasiva\Carga.cshtml" />
+    <Content Include="Views\CargaMasiva\Modal.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="MateriaCarga\" />
     <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
