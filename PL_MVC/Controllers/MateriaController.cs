@@ -19,7 +19,11 @@ namespace PL_MVC.Controllers
 
             materia.Nombre = (materia.Nombre==null)?"":materia.Nombre;
             materia.Creditos = (materia.Creditos==null)? byte.Parse(""):materia.Creditos;
-            ML.Result result = BL.Materia.GetAllEF(materia);
+            //ML.Result result = BL.Materia.GetAllEF(materia);
+
+            MateriaService.MateriaClient materiaClient = new MateriaService.MateriaClient();
+
+            ML.Result result = materiaClient.GetAll();
 
             materia.Semestre.Semestres = resultSemestre.Objects;
 
@@ -127,7 +131,11 @@ namespace PL_MVC.Controllers
                 if (materia.IdMateria == 0)
                 {
                     //add
-                    result = BL.Materia.AddEF(materia);
+                    MateriaService.MateriaClient materiaClient = new MateriaService.MateriaClient();
+
+                      result = materiaClient.Add(materia);
+                    //result = BL.Materia.AddEF(materia);
+                    
 
                     if (result.Correct)
                     {

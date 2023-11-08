@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ID="93c5746d-1822-4f7a-9e72-560eec56b5eb" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://localhost:62321/Materia.svc" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="Materia.wsdl" MetadataType="Wsdl" ID="621e52c7-eccb-4187-9171-03c3f6bee54b" SourceId="1" SourceUrl="http://localhost:62321/Materia.svc?wsdl" />
+    <MetadataFile FileName="Materia.disco" MetadataType="Disco" ID="df191e3a-06b3-4e8b-b003-24e42593718f" SourceId="1" SourceUrl="http://localhost:62321/Materia.svc?disco" />
+    <MetadataFile FileName="Materia.xsd" MetadataType="Schema" ID="2321eced-a7f0-41b0-820b-13a804209d56" SourceId="1" SourceUrl="http://localhost:62321/Materia.svc?xsd=xsd4" />
+    <MetadataFile FileName="Materia1.xsd" MetadataType="Schema" ID="9d30bb53-d34b-41db-b460-b5623c7e6981" SourceId="1" SourceUrl="http://localhost:62321/Materia.svc?xsd=xsd0" />
+    <MetadataFile FileName="Materia2.xsd" MetadataType="Schema" ID="feefc196-07f7-410a-8d45-778fddf4b9b6" SourceId="1" SourceUrl="http://localhost:62321/Materia.svc?xsd=xsd1" />
+    <MetadataFile FileName="Materia3.xsd" MetadataType="Schema" ID="156effc7-5750-43f5-8ac7-0a74601722ea" SourceId="1" SourceUrl="http://localhost:62321/Materia.svc?xsd=xsd2" />
+    <MetadataFile FileName="Materia4.xsd" MetadataType="Schema" ID="3fcbb400-df2c-4852-a48c-dc250e3576ce" SourceId="1" SourceUrl="http://localhost:62321/Materia.svc?xsd=xsd3" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>
