@@ -15,6 +15,20 @@
       </xs:sequence>
     </xs:complexType>
   </xs:element>
+  <xs:element name="Update">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/ML" minOccurs="0" name="materia" nillable="true" type="q3:Materia" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="UpdateResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q4="http://schemas.datacontract.org/2004/07/ML" minOccurs="0" name="UpdateResult" nillable="true" type="q4:Result" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
   <xs:element name="GetAll">
     <xs:complexType>
       <xs:sequence />
@@ -23,7 +37,7 @@
   <xs:element name="GetAllResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/ML" minOccurs="0" name="GetAllResult" nillable="true" type="q3:Result" />
+        <xs:element xmlns:q5="http://schemas.datacontract.org/2004/07/ML" minOccurs="0" name="GetAllResult" nillable="true" type="q5:Result" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>

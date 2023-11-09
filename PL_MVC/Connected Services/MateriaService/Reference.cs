@@ -28,6 +28,19 @@ namespace PL_MVC.MateriaService {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IMateria/Add", ReplyAction="http://tempuri.org/IMateria/AddResponse")]
         System.Threading.Tasks.Task<ML.Result> AddAsync(ML.Materia materia);
         
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IMateria/Update", ReplyAction="http://tempuri.org/IMateria/UpdateResponse")]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(System.Exception))]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ML.Plantel))]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ML.Semestre))]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ML.Result))]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(object[]))]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ML.Grupo))]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ML.Materia))]
+        ML.Result Update(ML.Materia materia);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IMateria/Update", ReplyAction="http://tempuri.org/IMateria/UpdateResponse")]
+        System.Threading.Tasks.Task<ML.Result> UpdateAsync(ML.Materia materia);
+        
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IMateria/GetAll", ReplyAction="http://tempuri.org/IMateria/GetAllResponse")]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(System.Exception))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ML.Materia))]
@@ -74,6 +87,14 @@ namespace PL_MVC.MateriaService {
         
         public System.Threading.Tasks.Task<ML.Result> AddAsync(ML.Materia materia) {
             return base.Channel.AddAsync(materia);
+        }
+        
+        public ML.Result Update(ML.Materia materia) {
+            return base.Channel.Update(materia);
+        }
+        
+        public System.Threading.Tasks.Task<ML.Result> UpdateAsync(ML.Materia materia) {
+            return base.Channel.UpdateAsync(materia);
         }
         
         public ML.Result GetAll() {

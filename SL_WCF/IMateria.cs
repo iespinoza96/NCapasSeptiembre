@@ -15,6 +15,9 @@ namespace SL_WCF
         ML.Result Add(ML.Materia materia);
 
         [OperationContract]
+        ML.Result Update(ML.Materia materia);
+
+        [OperationContract]
         [ServiceKnownType(typeof(ML.Materia))]
         ML.Result GetAll();
     }

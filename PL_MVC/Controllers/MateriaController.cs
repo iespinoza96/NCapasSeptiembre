@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Web;
 using System.Web.Mvc;
 
@@ -21,25 +23,56 @@ namespace PL_MVC.Controllers
             materia.Creditos = (materia.Creditos==null)? byte.Parse(""):materia.Creditos;
             //ML.Result result = BL.Materia.GetAllEF(materia);
 
-            MateriaService.MateriaClient materiaClient = new MateriaService.MateriaClient();
+            //MateriaService.MateriaClient materiaClient = new MateriaService.MateriaClient();
 
-            ML.Result result = materiaClient.GetAll();
+            //ML.Result result = materiaClient.GetAll();
 
-            materia.Semestre.Semestres = resultSemestre.Objects;
-
-            materia.Materias = new List<object>();
-
-            if (result.Correct)
-            {
-                materia.Materias = result.Objects;
-                return View(materia);
-            }
-            else
-            {
-                ViewBag.Message = result.Message;
-                return View(materia);
-            }
             
+
+            //materia.Materias = new List<object>();
+
+            //if (result.Correct)
+            //{
+            //    materia.Materias = result.Objects;
+            //    return View(materia);
+            //}
+            //else
+            //{
+            //    ViewBag.Message = result.Message;
+            //    return View(materia);
+            //}
+
+            ML.Result resultMateria = new ML.Result();
+            resultMateria.Objects = new List<Object>();
+
+            using (HttpClient client = new HttpClient())
+            {
+                string url = ConfigurationManager.AppSettings["url"];
+                client.BaseAddress = new Uri(url); //http://localhost:36733/api/materia/
+
+                var responseTask = client.GetAsync("getall"); //http://localhost:36733/api/materia/getall
+                responseTask.Wait();
+
+                var result = responseTask.Result; //400
+
+                if (result.IsSuccessStatusCode)//200
+                {
+                    var resultObjects = result.Content.ReadAsAsync<ML.Result>(); //result.Objects
+                    resultObjects.Wait();
+
+                    foreach (var resultItem in resultObjects.Result.Objects)
+                    {
+                        materia = Newtonsoft.Json.JsonConvert.DeserializeObject<ML.Materia>(resultItem.ToString());
+                        resultMateria.Objects.Add(materia);
+                    }
+
+                    materia.Materias = resultMateria.Objects;
+                }
+            }
+            materia.Semestre.Semestres = resultSemestre.Objects;
+            return View(materia);
+
+
         }
 
         [HttpPost]
@@ -127,11 +160,12 @@ namespace PL_MVC.Controllers
                 }
 
                 ML.Result result = new ML.Result();
+                MateriaService.MateriaClient materiaClient = new MateriaService.MateriaClient();
 
                 if (materia.IdMateria == 0)
                 {
                     //add
-                    MateriaService.MateriaClient materiaClient = new MateriaService.MateriaClient();
+                   
 
                       result = materiaClient.Add(materia);
                     //result = BL.Materia.AddEF(materia);
@@ -154,7 +188,8 @@ namespace PL_MVC.Controllers
                 {
                     //Update
 
-                    result = BL.Materia.UpdateEF(materia);
+                    //result = BL.Materia.UpdateEF(materia);
+                    result = materiaClient.Update(materia);
 
                     if (result.Correct)
                     {
